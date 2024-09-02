@@ -3,19 +3,24 @@ package com.thedev.sweetabilities;
 import com.thedev.sweetabilities.AbilityManager.AbilityManager;
 import com.thedev.sweetabilities.AbilityManager.CakedManager.CakedDamageListener;
 import com.thedev.sweetabilities.AbilityManager.CursedMarkManager.CursedDamageListener;
+import com.thedev.sweetabilities.AbilityManager.MirageManager.MirageItemListener;
 import com.thedev.sweetabilities.AbilityManager.RotManager.RotMoveListener;
 import com.thedev.sweetabilities.AbilityManager.SpectralManager.SpectralListener;
 import com.thedev.sweetabilities.AbilityManager.WrathManager.WrathDeathListener;
 import com.thedev.sweetabilities.Configuration.DefaultConfig;
+import com.thedev.sweetabilities.Utils.PacketUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class SweetAbilities extends JavaPlugin implements Listener {
+import java.util.UUID;
+
+public final class SweetAbilities extends JavaPlugin {
 
     /**
      * Note:
@@ -75,7 +80,7 @@ public final class SweetAbilities extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new CursedDamageListener(this, getAbilityManager().getCursedMarkManager()), this);
         Bukkit.getPluginManager().registerEvents(new WrathDeathListener(getAbilityManager().getWrathManager()), this);
         Bukkit.getPluginManager().registerEvents(new SpectralListener(this, getAbilityManager().getSpectralManager()), this);
-        Bukkit.getPluginManager().registerEvents(this,this);
+        Bukkit.getPluginManager().registerEvents(new MirageItemListener(), this);
 
         inst = this;
     }
@@ -83,17 +88,6 @@ public final class SweetAbilities extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-    }
-
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        if(!event.getPlayer().isSneaking()) return;
-
-        if(event.getAction() != Action.LEFT_CLICK_AIR) return;
-
-        Player player = event.getPlayer();
-
-        getAbilityManager().getSpectralManager().spectralPlayer(player.getUniqueId());
     }
 
     public AbilityManager getAbilityManager() {

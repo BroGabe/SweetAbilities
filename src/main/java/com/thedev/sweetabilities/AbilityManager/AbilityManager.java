@@ -2,6 +2,7 @@ package com.thedev.sweetabilities.AbilityManager;
 
 import com.thedev.sweetabilities.AbilityManager.CakedManager.CakedManager;
 import com.thedev.sweetabilities.AbilityManager.CursedMarkManager.CursedMarkManager;
+import com.thedev.sweetabilities.AbilityManager.MirageManager.MirageManager;
 import com.thedev.sweetabilities.AbilityManager.RotManager.RotManager;
 import com.thedev.sweetabilities.AbilityManager.SpectralManager.SpectralManager;
 import com.thedev.sweetabilities.AbilityManager.WrathManager.WrathManager;
@@ -19,6 +20,8 @@ public class AbilityManager {
 
     private final SpectralManager spectralManager;
 
+    private final MirageManager mirageManager;
+
     public AbilityManager(SweetAbilities plugin) {
 
         rotManager = new RotManager(plugin);
@@ -26,10 +29,15 @@ public class AbilityManager {
         cursedMarkManager = new CursedMarkManager(plugin);
         wrathManager = new WrathManager(plugin);
         spectralManager = new SpectralManager(plugin);
+        mirageManager = new MirageManager(plugin);
     }
 
     public WrathManager getWrathManager() {
         return wrathManager;
+    }
+
+    public MirageManager getMirageManager() {
+        return mirageManager;
     }
 
     public SpectralManager getSpectralManager() {

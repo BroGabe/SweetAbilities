@@ -1,13 +1,15 @@
 settings:
   rot-ability:
     damage: 5.0 # The raw damage dealt to a player
-    activation-per-level: 1 # The proc % increase per level. [Used in Enchants]
+    activation-per-level: 1.0 # The proc % increase per level. [Used in Enchants]
   cake-ability:
     damage-percent: 10 # How much more % damage should the caked player take!
-    activation-per-level: 1
+    activation-per-level: 1.0
   cursed-mark-ability:
     damage-percent: 10 # How much more % damage should the cursed player take!
-    activation-per-level: 1
+    activation-per-level: 1.0
   wrath-ability:
     damage: 1.5 # How much raw damage each strike should deal.
-    activation-per-level: 1
+    activation-per-level: 1.0
+  spectral-ability:
+    activation-per-level: 1.0

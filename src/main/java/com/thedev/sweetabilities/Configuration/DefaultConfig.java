@@ -25,4 +25,22 @@ public class DefaultConfig {
     public double WRATH_DAMAGE() {
         return plugin.getConfig().getDouble("settings.wrath-ability.damage");
     }
+
+    public double ACTIVATION_PER_LEVEL(String string) {
+        switch (string.toUpperCase()) {
+            case "ROT_ABILITY":
+                return plugin.getConfig().getDouble("settings.rot-ability.activation-per-level");
+            case "CAKE_ABILITY":
+                return plugin.getConfig().getDouble("settings.cake-ability.activation-per-level");
+            case "SPECTRAL_ABILITY":
+                return plugin.getConfig().getDouble("settings.spectral-ability.activation-per-level");
+            case "CURSED_MARK_ABILITY":
+                return plugin.getConfig().getDouble("settings.cursed-mark-ability.activation-per-level");
+            case "WRATH_ABILITY":
+                return plugin.getConfig().getDouble("settings.wrath-ability.activation-per-level");
+            default:
+                return 0.5;
+
+        }
+    }
 }
