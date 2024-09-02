@@ -43,7 +43,9 @@ public class RotBlock {
         Material blockChange = (blockOwners.isEmpty()) ? block.getType() : Material.REDSTONE_BLOCK;
         byte newBlockData = (blockOwners.isEmpty()) ? blockData : (byte) 0;
 
-        player.sendBlockChange(block.getLocation(), blockChange, newBlockData);
+        if(player != null && player.isOnline()) {
+            player.sendBlockChange(block.getLocation(), blockChange, newBlockData);
+        }
 
         block.getLocation().getWorld().getPlayers().forEach(loopedPlayer ->  {
             if(loopedPlayer != player) {

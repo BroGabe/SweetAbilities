@@ -39,6 +39,14 @@
             </goals>
           </execution>
         </executions>
+          <configuration>
+              <relocations>
+                  <relocation>
+                      <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                      <shadedPattern>com.thedev.sweetabilities.Utils</shadedPattern>
+                  </relocation>
+              </relocations>
+          </configuration>
       </plugin>
     </plugins>
     <resources>
@@ -61,6 +69,11 @@
       <repository>
           <id>dmulloy2-repo</id>
           <url>https://repo.dmulloy2.net/repository/public/</url>
+      </repository>
+      <repository>
+          <id>codemc-repo</id>
+          <url>https://repo.codemc.io/repository/maven-public/</url>
+          <layout>default</layout>
       </repository>
   </repositories>
 
@@ -90,6 +103,11 @@
           <version>2.11.2</version>
           <scope>system</scope>
           <systemPath>C:/Users/realo/OneDrive/Desktop/Minecraft/Dependencies/worldedit-bukkit.jar</systemPath>
+      </dependency>
+      <dependency>
+          <groupId>de.tr7zw</groupId>
+          <artifactId>item-nbt-api-plugin</artifactId>
+          <version>2.13.2</version>
       </dependency>
   </dependencies>
 </project>

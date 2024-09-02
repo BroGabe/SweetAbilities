@@ -1,3 +1,5 @@
 name: SweetAbilities
 version: '${project.version}'
+depend:
+  - ProtocolLib
 main: com.thedev.sweetabilities.SweetAbilities

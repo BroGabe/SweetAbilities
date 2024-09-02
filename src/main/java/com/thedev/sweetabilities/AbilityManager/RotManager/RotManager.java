@@ -4,7 +4,6 @@ import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.thedev.sweetabilities.SweetAbilities;
@@ -32,10 +31,6 @@ public class RotManager {
         this.plugin = plugin;
     }
 
-    public Map<Block, RotBlock> getRotBlockMap() {
-        return rotBlockMap;
-    }
-
     public boolean hasActiveRot(UUID uuid) {
         return activeRotPlayers.contains(uuid);
     }
@@ -61,7 +56,7 @@ public class RotManager {
     public void activateRot(UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
 
-        if(player == null || hasActiveRot(uuid)) return;
+        if(player == null || !player.isOnline() || hasActiveRot(uuid)) return;
 
         List<Block> eligibleRotBlocks = getEligibleRotBlocks(uuid);
 
@@ -79,9 +74,6 @@ public class RotManager {
     }
 
     public void removeRotPlayer(UUID uuid) {
-        Player player = Bukkit.getPlayer(uuid);
-        if(player == null || !hasActiveRot(uuid)) return;
-
         activeRotPlayers.remove(uuid);
 
         Iterator<RotBlock> rotBlockIterator = rotBlockMap.values().iterator();
@@ -142,13 +134,22 @@ public class RotManager {
 
         RegionContainer regionContainer = WorldGuardPlugin.inst().getRegionContainer();
 
-        ApplicableRegionSet applicableRegionSet = Objects.requireNonNull(regionContainer.get(player.getWorld())).getApplicableRegions(player.getLocation());
+        ApplicableRegionSet regionSet = Objects.requireNonNull(regionContainer.get(player.getWorld())).getApplicableRegions(player.getLocation());
 
-        for(ProtectedRegion region : applicableRegionSet.getRegions()) {
-            if(region.getFlag(DefaultFlag.PVP) == StateFlag.State.DENY) return true;
+        ProtectedRegion defaultRegion = regionContainer.get(player.getWorld()).getRegion("__global__");
+
+        if(defaultRegion == null) return false;
+
+        if(regionSet.size() == 0) {
+            if(defaultRegion.getFlag(DefaultFlag.PVP) == null) return false;
+            return (defaultRegion.getFlag(DefaultFlag.PVP) == StateFlag.State.DENY);
         }
 
-        return false;
+        for(ProtectedRegion region : regionSet) {
+            if(region.getFlag(DefaultFlag.PVP) != null && region.getFlag(DefaultFlag.PVP) == StateFlag.State.ALLOW) return false;
+        }
+
+        return true;
     }
 
     public void startRotDamageTask() {
@@ -158,8 +159,17 @@ public class RotManager {
         rotDamageTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if(activeRotPlayers.isEmpty()) rotDamageTask.cancel();
 
-            activeRotPlayers.forEach(activeRotPlayerUUID -> {
-                for(Entity nearbyEntity : Bukkit.getPlayer(activeRotPlayerUUID).getNearbyEntities(15, 15, 15)) {
+            Iterator<UUID> rotPlayerUUIDIterator = activeRotPlayers.iterator();
+
+            while (rotPlayerUUIDIterator.hasNext()) {
+                Player rotPlayer = Bukkit.getPlayer(rotPlayerUUIDIterator.next());
+
+                if(rotPlayer == null) {
+                    rotPlayerUUIDIterator.remove();
+                    continue;
+                }
+
+                for(Entity nearbyEntity : rotPlayer.getNearbyEntities(15, 15, 15)) {
                     if(!(nearbyEntity instanceof Player)) continue;
                     Player nearbyPlayer = (Player) nearbyEntity;
 
@@ -167,16 +177,17 @@ public class RotManager {
                     if(playerOwnsBlock(nearbyPlayer.getUniqueId())) continue;
                     if(isPlayerInSafeZone(nearbyPlayer.getUniqueId())) continue;
 
-                    double damageAmount = plugin.getConfig().getDouble("settings.rot-damage");
+                    double damageAmount = plugin.getDefaultConfig().ROT_DAMAGE();
 
                     RotDamagePlayerEvent event = new RotDamagePlayerEvent(nearbyPlayer, damageAmount);
 
                     Bukkit.getPluginManager().callEvent(event);
 
                     if(event.isCancelled()) continue;
-                    nearbyPlayer.damage(event.getDamageAmount());
+                    nearbyPlayer.damage(0.01);
+                    nearbyPlayer.setHealth(nearbyPlayer.getHealth() - event.getDamageAmount());
                 }
-            });
+            }
         }, 20, 20);
     }
 
