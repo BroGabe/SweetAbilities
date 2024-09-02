@@ -1,19 +1,20 @@
 package com.thedev.sweetabilities.AbilityManager.MirageManager;
 
+import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.server.PluginDisableEvent;
 
 public class MirageItemListener implements Listener {
 
-    // In the future, Shade NBT Api into the plugin
-    // and add a tag to prevent item pickup even after server crash or restart.
     @EventHandler
     public void onItemPickup(PlayerPickupItemEvent event) {
-        if(event.getItem().hasMetadata("DenyItemPickup")) {
-            event.setCancelled(true);
-            event.getItem().remove();
-        }
+        NBTItem nbtItem = new NBTItem(event.getItem().getItemStack());
+
+        if(!nbtItem.hasTag("SetDenyPickup")) return;
+        event.setCancelled(true);
+        Bukkit.broadcastMessage("denied pickup!");
+//        event.getItem().remove();
     }
 }

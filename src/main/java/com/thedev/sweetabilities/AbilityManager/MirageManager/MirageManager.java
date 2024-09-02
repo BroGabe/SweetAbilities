@@ -2,6 +2,7 @@ package com.thedev.sweetabilities.AbilityManager.MirageManager;
 
 import com.thedev.sweetabilities.SweetAbilities;
 import com.thedev.sweetabilities.Utils.ItemBuilder;
+import de.tr7zw.nbtapi.NBTItem;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.Equipment;
@@ -44,7 +45,7 @@ public class MirageManager {
 
             if(event.isCancelled()) continue;
 
-            disappearPlayer(plugin, player.getUniqueId(), nearbyPlayer.getUniqueId(), 4);
+            disappearPlayer(plugin, player.getUniqueId(), nearbyPlayer.getUniqueId(), plugin.getDefaultConfig().MIRAGE_TIME());
         }
 
         fakePlayerDeathNPC(player.getUniqueId());
@@ -77,9 +78,16 @@ public class MirageManager {
         potionMeta.setMainEffect(PotionEffectType.HEAL);
         pots.setItemMeta(potionMeta);
 
-        List<ItemStack> droppedItems = new ArrayList<>(Arrays.asList(playerHelmet, playerChestplate, playerLeggings, playerBoots, pots, playerHand));
+        List<ItemStack> droppedItems = new ArrayList<>();
 
-        droppedItems.forEach(droppedItem -> playerToFake.getWorld().dropItem(playerToFake.getLocation(), droppedItem).setMetadata("DenyItemPickup", new FixedMetadataValue(SweetAbilities.getInst(), "true")));
+        for(ItemStack itemStack : Arrays.asList(playerHelmet, playerChestplate, playerLeggings, playerBoots, pots, playerHand)) {
+            NBTItem nbtItem = new NBTItem(itemStack);
+            nbtItem.setBoolean("SetDenyPickup", true);
+
+            droppedItems.add(nbtItem.getItem());
+        }
+
+        droppedItems.forEach(droppedItem -> playerToFake.getWorld().dropItem(playerToFake.getLocation(), droppedItem));
 
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, playerToFake.getName());
         npc.getOrAddTrait(Equipment.class).set(Equipment.EquipmentSlot.HELMET, playerHelmet);

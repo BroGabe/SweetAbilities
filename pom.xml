@@ -42,7 +42,7 @@
           <configuration>
               <relocations>
                   <relocation>
-                      <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                      <pattern>de.tr7zw.sweetabilities.nbtapi</pattern>
                       <shadedPattern>com.thedev.sweetabilities.Utils</shadedPattern>
                   </relocation>
               </relocations>

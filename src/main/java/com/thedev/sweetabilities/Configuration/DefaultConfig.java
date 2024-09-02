@@ -26,6 +26,10 @@ public class DefaultConfig {
         return plugin.getConfig().getDouble("settings.wrath-ability.damage");
     }
 
+    public int MIRAGE_TIME() {
+        return plugin.getConfig().getInt("settings.mirage-ability.mirage-time");
+    }
+
     public double ACTIVATION_PER_LEVEL(String string) {
         switch (string.toUpperCase()) {
             case "ROT_ABILITY":
@@ -38,6 +42,8 @@ public class DefaultConfig {
                 return plugin.getConfig().getDouble("settings.cursed-mark-ability.activation-per-level");
             case "WRATH_ABILITY":
                 return plugin.getConfig().getDouble("settings.wrath-ability.activation-per-level");
+            case "MIRAGE_ABILITY":
+                return plugin.getConfig().getDouble("settings.mirage-ability.activation-per-level");
             default:
                 return 0.5;
 

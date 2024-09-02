@@ -13,3 +13,6 @@ settings:
     activation-per-level: 1.0
   spectral-ability:
     activation-per-level: 1.0
+  mirage-ability:
+    mirage-time: 4 # The seconds a player should be miraged for
+    activation-per-level: 1.0
