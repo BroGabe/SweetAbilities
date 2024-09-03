@@ -35,6 +35,8 @@ public class MirageManager {
 
         addMiragePlayer(playerUUID);
 
+        System.out.println("Mirage activated!");
+
         for(Entity nearbyEntity : player.getNearbyEntities(15, 15, 15)) {
             if(!(nearbyEntity instanceof Player)) continue;
 
@@ -125,7 +127,6 @@ public class MirageManager {
             }
 
             if(viewerPlayer == null || !viewerPlayer.isOnline() || targetPlayer == null || !targetPlayer.isOnline()) return;
-
 
             viewerPlayer.showPlayer(targetPlayer);
         }, (20L * seconds));

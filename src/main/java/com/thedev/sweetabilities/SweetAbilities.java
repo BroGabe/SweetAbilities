@@ -9,10 +9,10 @@ import com.thedev.sweetabilities.AbilityManager.SpectralManager.SpectralListener
 import com.thedev.sweetabilities.AbilityManager.WrathManager.WrathDeathListener;
 import com.thedev.sweetabilities.Configuration.DefaultConfig;
 import org.bukkit.Bukkit;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-public final class SweetAbilities extends JavaPlugin {
+public final class SweetAbilities extends JavaPlugin{
 
     private static SweetAbilities inst;
 

@@ -60,12 +60,7 @@ public class CakedManager {
         Bukkit.getScheduler().runTaskLater(SweetAbilities.getInst(), () -> {
             Material material = (event.getCakedPlayer().getInventory().getHelmet() == null) ? Material.AIR : player.getInventory().getHelmet().getType();
 
-            System.out.println("Does caked set contain cakedPlayerUUID?");
-            System.out.println(isCakedSet.contains(cakedPlayerUUID));
             removeFromCakeSet(cakedPlayerUUID);
-
-            System.out.println("Does caked set contain cakedPlayerUUID #2?");
-            System.out.println(isCakedSet.contains(cakedPlayerUUID));
 
             Iterator<Map.Entry<UUID, UUID>> entryIterator = seesCakedPlayerMap.entrySet().iterator();
 
