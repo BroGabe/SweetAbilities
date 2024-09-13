@@ -5,7 +5,14 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import java.util.Set;
+import java.util.UUID;
+
 public class RotDamagePlayerEvent extends Event implements Cancellable {
+
+    private static final HandlerList handlerList = new HandlerList();
+
+    private final Set<UUID> rotOwners;
 
     private final Player damagedPlayer;
 
@@ -13,9 +20,10 @@ public class RotDamagePlayerEvent extends Event implements Cancellable {
 
     private boolean isCancelled = false;
 
-    public RotDamagePlayerEvent(Player damagedPlayer, double damageAmount) {
+    public RotDamagePlayerEvent(Player damagedPlayer, double damageAmount, Set<UUID> rotOwners) {
         this.damagedPlayer = damagedPlayer;
         this.damageAmount = damageAmount;
+        this.rotOwners = rotOwners;
     }
 
     public Player getDamagedPlayer() {
@@ -30,6 +38,10 @@ public class RotDamagePlayerEvent extends Event implements Cancellable {
         this.damageAmount = damageAmount;
     }
 
+    public Set<UUID> getRotOwners() {
+        return rotOwners;
+    }
+
     @Override
     public boolean isCancelled() {
         return isCancelled;
@@ -42,6 +54,10 @@ public class RotDamagePlayerEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return new HandlerList();
+        return handlerList;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 }

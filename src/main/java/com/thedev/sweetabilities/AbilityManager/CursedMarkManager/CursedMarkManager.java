@@ -35,6 +35,12 @@ public class CursedMarkManager {
 
         if(cursedPlayer == null || !cursedPlayer.isOnline() || isPlayerCursed(uuid)) return;
 
+        CursePlayerEvent event = new CursePlayerEvent(cursedPlayer);
+
+        Bukkit.getPluginManager().callEvent(event);
+
+        if(event.isCancelled()) return;
+
         addCursedPlayer(uuid);
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> removeCursedPlayer(uuid), 100L);

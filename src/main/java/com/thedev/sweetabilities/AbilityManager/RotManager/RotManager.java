@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.thedev.sweetabilities.SweetAbilities;
+import com.thedev.sweetabilities.Utils.FactionsSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -124,7 +125,9 @@ public class RotManager {
         for(Player worldPlayer : player.getWorld().getPlayers()) {
             if(worldPlayer == player) continue;
 
-            eligibleRotBlocks.forEach(block -> worldPlayer.sendBlockChange(block.getLocation(), Material.REDSTONE_BLOCK, (byte) 0));
+            Material rotMaterial = (FactionsSupport.isRelated(worldPlayer, player)) ? Material.SEA_LANTERN : Material.REDSTONE;
+
+            eligibleRotBlocks.forEach(block -> worldPlayer.sendBlockChange(block.getLocation(), rotMaterial, (byte) 0));
         }
     }
 
@@ -173,13 +176,19 @@ public class RotManager {
                     if(!(nearbyEntity instanceof Player)) continue;
                     Player nearbyPlayer = (Player) nearbyEntity;
 
+                    if(nearbyPlayer == null || !nearbyPlayer.isOnline() || nearbyPlayer.isDead()) continue;
+
                     if(!isStandingInRot(nearbyPlayer.getUniqueId())) continue;
                     if(playerOwnsBlock(nearbyPlayer.getUniqueId())) continue;
                     if(isPlayerInSafeZone(nearbyPlayer.getUniqueId())) continue;
 
+                    Block block = nearbyPlayer.getLocation().clone().subtract(0, 1, 0).getBlock();
+
+                    if(!rotBlockMap.containsKey(block)) continue;
+
                     double damageAmount = plugin.getDefaultConfig().ROT_DAMAGE();
 
-                    RotDamagePlayerEvent event = new RotDamagePlayerEvent(nearbyPlayer, damageAmount);
+                    RotDamagePlayerEvent event = new RotDamagePlayerEvent(nearbyPlayer, damageAmount, rotBlockMap.get(block).getBlockOwners());
 
                     Bukkit.getPluginManager().callEvent(event);
 

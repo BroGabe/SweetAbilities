@@ -2,4 +2,6 @@ name: SweetAbilities
 version: '${project.version}'
 depend:
   - ProtocolLib
+  - Factions
+  - WorldGuard
 main: com.thedev.sweetabilities.SweetAbilities
