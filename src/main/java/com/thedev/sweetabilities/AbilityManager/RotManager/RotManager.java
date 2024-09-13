@@ -194,7 +194,7 @@ public class RotManager {
 
                     if(event.isCancelled()) continue;
                     nearbyPlayer.damage(0.01);
-                    nearbyPlayer.setHealth(nearbyPlayer.getHealth() - event.getDamageAmount());
+                    nearbyPlayer.setHealth(Math.max(0, nearbyPlayer.getHealth() - event.getDamageAmount()));
                 }
             }
         }, 20, 20);
