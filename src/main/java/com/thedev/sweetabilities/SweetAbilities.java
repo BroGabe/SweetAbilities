@@ -3,6 +3,7 @@ package com.thedev.sweetabilities;
 import com.thedev.sweetabilities.AbilityManager.AbilityManager;
 import com.thedev.sweetabilities.AbilityManager.CakedManager.CakedDamageListener;
 import com.thedev.sweetabilities.AbilityManager.CursedMarkManager.CursedDamageListener;
+import com.thedev.sweetabilities.AbilityManager.LoversAbility.LoversListener;
 import com.thedev.sweetabilities.AbilityManager.MirageManager.MirageItemListener;
 import com.thedev.sweetabilities.AbilityManager.RotManager.RotDamageListener;
 import com.thedev.sweetabilities.AbilityManager.RotManager.RotMoveListener;
@@ -35,6 +36,7 @@ public final class SweetAbilities extends JavaPlugin{
         Bukkit.getPluginManager().registerEvents(new SpectralListener(this, getAbilityManager().getSpectralManager()), this);
         Bukkit.getPluginManager().registerEvents(new MirageItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new RotDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new LoversListener(this), this);
 
         inst = this;
     }
