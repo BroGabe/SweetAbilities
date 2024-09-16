@@ -3,8 +3,10 @@ package com.thedev.sweetabilities.AbilityManager.LoversAbility;
 import com.thedev.sweetabilities.Configuration.DefaultConfig;
 import com.thedev.sweetabilities.Configuration.PlayerData;
 import com.thedev.sweetabilities.SweetAbilities;
+import com.thedev.sweetabilities.Utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -25,7 +27,12 @@ public class LoversManager {
 
     public void activateLovers(UUID uuid) {
         if(Bukkit.getPlayer(uuid) == null || !Bukkit.getPlayer(uuid).isOnline()) return;
-        if(!hasLovers(uuid)) return;
+        if(hasLovers(uuid)) return;
+
+        Player player = Bukkit.getPlayer(uuid);
+
+        player.sendMessage(ColorUtil.color(plugin.getConfig().getString("settings.lovers-ability.lovers-msg")));
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, 10, 7);
 
         DefaultConfig defaultConfig = plugin.getDefaultConfig();
 
@@ -84,6 +91,11 @@ public class LoversManager {
         double maxHearts = defaultConfig.LOVERS_MAX_HEARTS();
 
         double newHearts = Math.min(maxHearts, getLoversHearts(uuid) + heartsPer);
+
+        if(getLoversHearts(uuid) != 0.0) {
+            player.sendMessage(ColorUtil.color(plugin.getConfig().getString("settings.lovers-ability.lovers-proc-msg")));
+            player.playSound(player.getLocation(), Sound.LEVEL_UP, 10, 7);
+        }
 
         if(newHearts == maxHearts) {
             double finalHealth = maxHearts - getLoversHearts(uuid);

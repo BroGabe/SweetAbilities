@@ -21,4 +21,6 @@ settings:
     hearts-per-proc: 1.0 # The amount of hearts to give when proc-chance is successful.
     proc-chance: 25 # The chance to get extra hearts while ability is active and being attacked
     activation-per-level: 1.0 # The chance of lovers being activated per enchant level.
+    lovers-msg: '&f&l*&d&l*&f&l* &d&lLOVERS ACTIVATION &f&l*&d&l*&f&l*'
+    lovers-proc-msg: '&f&l*&d&l*&f&l* &d&lLOVERS HEARTS &f&l*&d&l*&f&l*'
     lovers-time: 30 # How long lovers ability should last.
