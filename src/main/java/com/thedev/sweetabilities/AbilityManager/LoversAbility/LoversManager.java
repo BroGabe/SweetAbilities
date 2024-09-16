@@ -1,9 +1,13 @@
 package com.thedev.sweetabilities.AbilityManager.LoversAbility;
 
+import com.thedev.sweetabilities.Configuration.DefaultConfig;
+import com.thedev.sweetabilities.Configuration.PlayerData;
 import com.thedev.sweetabilities.SweetAbilities;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +15,7 @@ import java.util.UUID;
 
 public class LoversManager {
 
-    private final Map<UUID, Double> activeLovers = new HashMap<>();
-
-    private final Map<UUID, Double> cachedRemove = new HashMap<>();
+    private final Map<UUID, BukkitTask> loversPlayersTask = new HashMap<>();
 
     private final SweetAbilities plugin;
 
@@ -22,72 +24,100 @@ public class LoversManager {
     }
 
     public void activateLovers(UUID uuid) {
-        if(activeLovers.containsKey(uuid) || Bukkit.getPlayer(uuid) == null) return;
+        if(Bukkit.getPlayer(uuid) == null || !Bukkit.getPlayer(uuid).isOnline()) return;
+        if(!hasLovers(uuid)) return;
 
-        activeLovers.put(uuid, 0.0);
+        DefaultConfig defaultConfig = plugin.getDefaultConfig();
 
-        addLoversHeart(uuid);
+        PlayerData playerData = plugin.getPlayerData();
+        FileConfiguration playerConfig = playerData.getPlayerConfig(uuid);
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> removeLovers(uuid), (20L * plugin.getDefaultConfig().LOVERS_TIME()));
+        playerConfig.set("lovers-ability", 0.0);
+        playerData.saveConfig(uuid, playerConfig);
+
+        addLoversHearts(uuid);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> removeLovers(uuid, false), (20L * defaultConfig.LOVERS_TIME()));
     }
 
-    public void addLoversHeart(UUID uuid) {
-        if(!activeLovers.containsKey(uuid)) return;
+    public void removeLovers(UUID uuid, boolean playerDied) {
+        if(!hasLovers(uuid)) return;
+
+        OfflinePlayer player = Bukkit.getPlayer(uuid);
+
+        PlayerData playerData = plugin.getPlayerData();
+        FileConfiguration playerConfig = playerData.getPlayerConfig(uuid);
+
+        if(hasLoversTask(uuid)) {
+            loversPlayersTask.get(uuid).cancel();
+            loversPlayersTask.remove(uuid);
+        }
+
+        if(playerDied) {
+            playerConfig.set("lovers-ability", null);
+            playerData.saveConfig(uuid, playerConfig);
+            return;
+        }
+
+        if(!player.isOnline()) return;
+
+        Player onlinePlayer = Bukkit.getPlayer(uuid);
+
+        onlinePlayer.setMaxHealth(onlinePlayer.getMaxHealth() - getLoversHearts(uuid));
+
+        playerConfig.set("lovers-ability", null);
+        playerData.saveConfig(uuid, playerConfig);
+    }
+
+    protected void addLoversHearts(UUID uuid) {
         if(Bukkit.getPlayer(uuid) == null || !Bukkit.getPlayer(uuid).isOnline()) return;
+        if(!hasLovers(uuid)) return;
 
         Player player = Bukkit.getPlayer(uuid);
 
-        double heartsPer = plugin.getDefaultConfig().LOVERS_HEARTS_PER();
+        DefaultConfig defaultConfig = plugin.getDefaultConfig();
 
-        double maxHearts = plugin.getDefaultConfig().LOVERS_MAX_HEARTS();
+        PlayerData playerData = plugin.getPlayerData();
+        FileConfiguration playerConfig = playerData.getPlayerConfig(uuid);
 
-        double newHearts = Math.min(maxHearts, activeLovers.get(uuid) + heartsPer);
+        double heartsPer = defaultConfig.LOVERS_HEARTS_PER();
+        double maxHearts = defaultConfig.LOVERS_MAX_HEARTS();
+
+        double newHearts = Math.min(maxHearts, getLoversHearts(uuid) + heartsPer);
 
         if(newHearts == maxHearts) {
-            double finalHealth = maxHearts - activeLovers.get(uuid);
+            double finalHealth = maxHearts - getLoversHearts(uuid);
 
             player.setMaxHealth((player.getMaxHealth() + Math.max(0, finalHealth)));
         } else {
             player.setMaxHealth(player.getMaxHealth() + heartsPer);
         }
 
-        activeLovers.put(uuid, newHearts);
+        playerConfig.set("lovers-ability", newHearts);
+        playerData.saveConfig(uuid, playerConfig);
     }
 
-    private void removeLovers(UUID uuid) {
-        if(!activeLovers.containsKey(uuid)) return;
-        if(Bukkit.getOfflinePlayer(uuid) == null) return;
+    public boolean hasLovers(UUID uuid) {
+        if(Bukkit.getOfflinePlayer(uuid) == null) return false;
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-        double extraHearts = activeLovers.get(uuid);
+        PlayerData playerData = plugin.getPlayerData();
+        FileConfiguration playerConfig = playerData.getPlayerConfig(uuid);
 
-        activeLovers.remove(uuid);
-
-        if(!offlinePlayer.isOnline()) {
-            cachedRemove.put(offlinePlayer.getUniqueId(), extraHearts);
-            activeLovers.remove(offlinePlayer.getUniqueId());
-            return;
-        }
-
-        Player player = Bukkit.getPlayer(uuid);
-        player.setMaxHealth(player.getMaxHealth() - extraHearts);
-        activeLovers.remove(offlinePlayer.getUniqueId());
+        return playerConfig.contains("lovers-ability");
     }
 
-    public boolean isCached(UUID uuid) {
-        return cachedRemove.containsKey(uuid);
+    private double getLoversHearts(UUID uuid) {
+        if(Bukkit.getOfflinePlayer(uuid) == null) return 0.0;
+        if(!hasLovers(uuid)) return 0.0;
+
+        PlayerData playerData = plugin.getPlayerData();
+        FileConfiguration playerConfig = playerData.getPlayerConfig(uuid);
+
+        return playerConfig.getDouble("lovers-ability", 0.0);
     }
 
-    public void removeCachedPlayer(UUID uuid) {
-        if(!isCached(uuid)) return;
-        if(Bukkit.getPlayer(uuid) == null) return;
-
-        Player player = Bukkit.getPlayer(uuid);
-
-        player.setMaxHealth(player.getMaxHealth() - cachedRemove.get(uuid));
+    protected boolean hasLoversTask(UUID uuid) {
+        return loversPlayersTask.containsKey(uuid);
     }
 
-    public boolean hasActiveLovers(UUID uuid) {
-        return activeLovers.containsKey(uuid);
-    }
 }

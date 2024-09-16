@@ -10,6 +10,7 @@ import com.thedev.sweetabilities.AbilityManager.RotManager.RotMoveListener;
 import com.thedev.sweetabilities.AbilityManager.SpectralManager.SpectralListener;
 import com.thedev.sweetabilities.AbilityManager.WrathManager.WrathDeathListener;
 import com.thedev.sweetabilities.Configuration.DefaultConfig;
+import com.thedev.sweetabilities.Configuration.PlayerData;
 import org.bukkit.Bukkit;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,12 +23,16 @@ public final class SweetAbilities extends JavaPlugin{
 
     private DefaultConfig defaultConfig;
 
+    private PlayerData playerData;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
         defaultConfig = new DefaultConfig(this);
+        playerData = new PlayerData(this);
         abilityManager = new AbilityManager(this);
+
 
         Bukkit.getPluginManager().registerEvents(new RotMoveListener(abilityManager.getRotManager()), this);
         Bukkit.getPluginManager().registerEvents(new CakedDamageListener(this, abilityManager.getCakedManager()), this);
@@ -56,5 +61,9 @@ public final class SweetAbilities extends JavaPlugin{
 
     public static SweetAbilities getInst() {
         return inst;
+    }
+
+    public PlayerData getPlayerData() {
+        return playerData;
     }
 }

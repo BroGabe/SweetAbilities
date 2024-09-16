@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.Random;
@@ -23,7 +24,7 @@ public class LoversListener implements Listener {
 
         Player player = (Player) event.getEntity();
 
-        if(!plugin.getAbilityManager().getLoversManager().hasActiveLovers(player.getUniqueId())) return;
+        if(!plugin.getAbilityManager().getLoversManager().hasLovers(player.getUniqueId())) return;
 
         Random random = new Random();
 
@@ -31,15 +32,26 @@ public class LoversListener implements Listener {
 
         if(randomInt > plugin.getDefaultConfig().LOVERS_PROC_CHANCE()) return;
 
-        plugin.getAbilityManager().getLoversManager().addLoversHeart(player.getUniqueId());
+        plugin.getAbilityManager().getLoversManager().addLoversHearts(player.getUniqueId());
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if(!plugin.getAbilityManager().getLoversManager().isCached(event.getPlayer().getUniqueId())) return;
-
         LoversManager loversManager = plugin.getAbilityManager().getLoversManager();
 
-        loversManager.removeCachedPlayer(event.getPlayer().getUniqueId());
+        if(!loversManager.hasLovers(event.getPlayer().getUniqueId())) return;
+
+        if(loversManager.hasLoversTask(event.getPlayer().getUniqueId())) return;
+
+        loversManager.removeLovers(event.getPlayer().getUniqueId(), false);
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        LoversManager loversManager = plugin.getAbilityManager().getLoversManager();
+
+        if(!loversManager.hasLovers(event.getEntity().getUniqueId())) return;
+
+        loversManager.removeLovers(event.getEntity().getUniqueId(), true);
     }
 }
