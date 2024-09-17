@@ -23,6 +23,11 @@ public class RotBlock {
         blockData = block.getData();
     }
 
+    /**
+     * Called when the player moves by updateRotPlayer();
+     * @param uuid
+     * @param eligibleRotBlocks
+     */
     public void updatePlayer(UUID uuid, List<Block> eligibleRotBlocks) {
         if(isValidLocation(eligibleRotBlocks)) {
             return;
