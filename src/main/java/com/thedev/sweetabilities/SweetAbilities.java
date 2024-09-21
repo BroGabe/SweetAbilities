@@ -1,16 +1,18 @@
 package com.thedev.sweetabilities;
 
-import com.thedev.sweetabilities.AbilityManager.AbilityManager;
-import com.thedev.sweetabilities.AbilityManager.CakedManager.CakedDamageListener;
-import com.thedev.sweetabilities.AbilityManager.CursedMarkManager.CursedDamageListener;
-import com.thedev.sweetabilities.AbilityManager.LoversAbility.LoversListener;
-import com.thedev.sweetabilities.AbilityManager.MirageManager.MirageItemListener;
-import com.thedev.sweetabilities.AbilityManager.RotManager.RotDamageListener;
-import com.thedev.sweetabilities.AbilityManager.RotManager.RotMoveListener;
-import com.thedev.sweetabilities.AbilityManager.SpectralManager.SpectralListener;
-import com.thedev.sweetabilities.AbilityManager.WrathManager.WrathDeathListener;
-import com.thedev.sweetabilities.Configuration.DefaultConfig;
-import com.thedev.sweetabilities.Configuration.PlayerData;
+import com.thedev.sweetabilities.abilities.AbilityManager;
+import com.thedev.sweetabilities.abilities.bleedmanager.BleedListeners;
+import com.thedev.sweetabilities.abilities.cakedmanager.CakedDamageListener;
+import com.thedev.sweetabilities.abilities.cursedmarkmanager.CursedDamageListener;
+import com.thedev.sweetabilities.abilities.loversmanager.LoversListener;
+import com.thedev.sweetabilities.abilities.miragemanager.MirageItemListener;
+import com.thedev.sweetabilities.abilities.rotmanager.RotDamageListener;
+import com.thedev.sweetabilities.abilities.rotmanager.RotMoveListener;
+import com.thedev.sweetabilities.abilities.spectralmanager.SpectralListener;
+import com.thedev.sweetabilities.abilities.wrathmanager.WrathDeathListener;
+import com.thedev.sweetabilities.configuration.DefaultConfig;
+import com.thedev.sweetabilities.configuration.PlayerData;
+import com.thedev.sweetabilities.listeners.TestingListener;
 import org.bukkit.Bukkit;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +44,8 @@ public final class SweetAbilities extends JavaPlugin{
         Bukkit.getPluginManager().registerEvents(new MirageItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new RotDamageListener(), this);
         Bukkit.getPluginManager().registerEvents(new LoversListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new BleedListeners(this), this);
+        Bukkit.getPluginManager().registerEvents(new TestingListener(this), this);
 
         inst = this;
     }

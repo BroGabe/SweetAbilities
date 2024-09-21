@@ -1,4 +1,8 @@
 settings:
+  bleed-ability:
+    damage: 2.0 # The raw damage dealt to a player
+    time: 4 # How long the ability should last.
+    activation-per-level: 1.0
   rot-ability:
     damage: 5.0 # The raw damage dealt to a player
     activation-per-level: 1.0 # The proc % increase per level. [Used in Enchants]
