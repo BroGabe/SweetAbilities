@@ -2,6 +2,7 @@ package com.thedev.sweetabilities.listeners;
 
 import com.thedev.sweetabilities.SweetAbilities;
 import com.thedev.sweetabilities.abilities.bleedmanager.BleedManager;
+import com.thedev.sweetabilities.abilities.diabloability.DiabloAbilityManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -17,14 +18,13 @@ public class TestingListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        System.out.println("Did event get called?");
         if(!event.getPlayer().isSneaking()) return;
         if(event.getAction() != Action.LEFT_CLICK_AIR) return;
 
-        System.out.println("Did player bleed?");
+        DiabloAbilityManager diabloAbilityManager = plugin.getAbilityManager().getDiabloAbilityManager();;
 
-        BleedManager bleedManager = plugin.getAbilityManager().getBleedManager();
+        diabloAbilityManager.diabloPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getUniqueId());
 
-        bleedManager.bleedPlayer(event.getPlayer().getUniqueId());
+        System.out.println("Did it diablo player?");
     }
 }

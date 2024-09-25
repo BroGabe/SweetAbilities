@@ -27,7 +27,7 @@ public class BleedManager {
         if(Bukkit.getPlayer(uuid) == null || !Bukkit.getPlayer(uuid).isOnline()) return;
 
         Player player = Bukkit.getPlayer(uuid);
-        player.sendMessage(ColorUtil.color("&4&l*&c&l*&4&l* &c&lBLEEDING *4&l*&c&l*&4&l*"));
+        player.sendMessage(ColorUtil.color("&4&l*&c&l*&4&l* &c&lBLEEDING &4&l*&c&l*&4&l*"));
 
         addToBleedingSet(uuid);
         startBleedTask();

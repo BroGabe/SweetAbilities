@@ -3,6 +3,7 @@ package com.thedev.sweetabilities.abilities;
 import com.thedev.sweetabilities.abilities.bleedmanager.BleedManager;
 import com.thedev.sweetabilities.abilities.cakedmanager.CakedManager;
 import com.thedev.sweetabilities.abilities.cursedmarkmanager.CursedMarkManager;
+import com.thedev.sweetabilities.abilities.diabloability.DiabloAbilityManager;
 import com.thedev.sweetabilities.abilities.loversmanager.LoversManager;
 import com.thedev.sweetabilities.abilities.miragemanager.MirageManager;
 import com.thedev.sweetabilities.abilities.rotmanager.RotManager;
@@ -28,6 +29,8 @@ public class AbilityManager {
 
     private final LoversManager loversManager;
 
+    private final DiabloAbilityManager diabloAbilityManager;
+
     public AbilityManager(SweetAbilities plugin) {
 
         rotManager = new RotManager(plugin);
@@ -38,10 +41,15 @@ public class AbilityManager {
         mirageManager = new MirageManager(plugin);
         loversManager = new LoversManager(plugin);
         bleedManager = new BleedManager(plugin);
+        diabloAbilityManager = new DiabloAbilityManager(plugin);
     }
 
     public WrathManager getWrathManager() {
         return wrathManager;
+    }
+
+    public DiabloAbilityManager getDiabloAbilityManager() {
+        return diabloAbilityManager;
     }
 
     public LoversManager getLoversManager() {

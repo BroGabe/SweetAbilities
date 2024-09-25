@@ -7,6 +7,8 @@ import org.bukkit.event.HandlerList;
 
 public class BleedDamageEvent extends Event implements Cancellable {
 
+    private static HandlerList handlerList = new HandlerList();
+
     private final Player bleedingPlayer;
 
     private double damageAmount;
@@ -40,6 +42,10 @@ public class BleedDamageEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlerList;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlerList;
     }
 }
