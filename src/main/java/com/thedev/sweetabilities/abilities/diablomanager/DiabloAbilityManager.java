@@ -1,4 +1,4 @@
-package com.thedev.sweetabilities.abilities.diabloability;
+package com.thedev.sweetabilities.abilities.diablomanager;
 
 import com.thedev.sweetabilities.SweetAbilities;
 import org.bukkit.Bukkit;

@@ -138,7 +138,7 @@ public class RotManager {
             while (rotPlayerUUIDIterator.hasNext()) {
                 Player rotPlayer = Bukkit.getPlayer(rotPlayerUUIDIterator.next());
 
-                if(rotPlayer == null) {
+                if(rotPlayer == null || !rotPlayer.isOnline()) {
                     rotPlayerUUIDIterator.remove();
                     continue;
                 }

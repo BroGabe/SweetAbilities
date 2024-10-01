@@ -14,6 +14,10 @@ public class DefaultConfig {
         return plugin.getConfig().getInt("settings.rot-ability.damage");
     }
 
+    public int HELL_DAMAGE_PERCENTAGE() {
+        return plugin.getConfig().getInt("settings.hell-ability.damage-percent");
+    }
+
     public double BLEED_DAMAGE() {
         return plugin.getConfig().getDouble("settings.bleed-ability.damage");
     }

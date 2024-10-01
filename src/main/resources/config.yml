@@ -12,6 +12,9 @@ settings:
   cursed-mark-ability:
     damage-percent: 10 # How much more % damage should the cursed player take!
     activation-per-level: 1.0
+  hell-ability:
+    damage-percent: 10 # How much more % damage should the hell person deal
+    activation-per-level: 1.0
   wrath-ability:
     damage: 1.5 # How much raw damage each strike should deal.
     activation-per-level: 1.0

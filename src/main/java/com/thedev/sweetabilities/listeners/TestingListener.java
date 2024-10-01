@@ -1,12 +1,15 @@
 package com.thedev.sweetabilities.listeners;
 
 import com.thedev.sweetabilities.SweetAbilities;
-import com.thedev.sweetabilities.abilities.bleedmanager.BleedManager;
-import com.thedev.sweetabilities.abilities.diabloability.DiabloAbilityManager;
+import com.thedev.sweetabilities.abilities.diablomanager.DiabloAbilityManager;
+import com.thedev.sweetabilities.abilities.hellmanager.HellManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.UUID;
 
 public class TestingListener implements Listener {
 
@@ -21,10 +24,10 @@ public class TestingListener implements Listener {
         if(!event.getPlayer().isSneaking()) return;
         if(event.getAction() != Action.LEFT_CLICK_AIR) return;
 
-        DiabloAbilityManager diabloAbilityManager = plugin.getAbilityManager().getDiabloAbilityManager();;
+        UUID playerUUID = event.getPlayer().getUniqueId();
 
-        diabloAbilityManager.diabloPlayer(event.getPlayer().getUniqueId(), event.getPlayer().getUniqueId());
+        HellManager hellManager = plugin.getAbilityManager().getHellManager();
 
-        System.out.println("Did it diablo player?");
+        hellManager.activateHell(playerUUID, false);
     }
 }
