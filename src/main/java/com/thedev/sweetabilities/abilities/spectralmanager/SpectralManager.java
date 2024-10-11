@@ -46,6 +46,8 @@ public class SpectralManager {
         spectralPlayers.remove(uuid);
     }
 
+    public Set<UUID> getSpectralPlayers() { return spectralPlayers; }
+
     public void spectralPlayer(UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
 
@@ -62,7 +64,7 @@ public class SpectralManager {
                 removeSpectralPlayer(uuid);
                 return;
             }
-
+            
             removeSpectralPlayer(uuid);
 
             ItemStack itemStack = player.getInventory().getHelmet();

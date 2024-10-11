@@ -22,7 +22,9 @@ public class PacketUtil {
         PacketContainer packetContainer = protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
 
         packetContainer.getIntegers().write(0, targetPlayer.getEntityId());
-        packetContainer.getIntegers().write(1, 4);
+
+
+        packetContainer.getIntegers().write(1, 0);
 
         packetContainer.getItemModifier().write(0, itemStack);
 

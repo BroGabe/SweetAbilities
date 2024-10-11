@@ -1,5 +1,7 @@
 package com.thedev.sweetabilities;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.thedev.sweetabilities.abilities.AbilityManager;
 import com.thedev.sweetabilities.abilities.bleedmanager.BleedListeners;
 import com.thedev.sweetabilities.abilities.cakedmanager.CakedDamageListener;
@@ -27,12 +29,16 @@ public final class SweetAbilities extends JavaPlugin{
 
     private PlayerData playerData;
 
+    private ProtocolManager protocolManager;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
         defaultConfig = new DefaultConfig(this);
         playerData = new PlayerData(this);
+
+        protocolManager = ProtocolLibrary.getProtocolManager();
         abilityManager = new AbilityManager(this);
 
 
@@ -53,6 +59,10 @@ public final class SweetAbilities extends JavaPlugin{
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public ProtocolManager getProtocolManager() {
+        return protocolManager;
     }
 
     public AbilityManager getAbilityManager() {

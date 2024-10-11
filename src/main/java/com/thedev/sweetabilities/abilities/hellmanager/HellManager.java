@@ -64,7 +64,7 @@ public class HellManager {
 
     public void activateHell(UUID uuid, boolean empowered) {
         if(Bukkit.getPlayer(uuid) == null || !Bukkit.getPlayer(uuid).isOnline()) return;
-        if(abilityPlayers.contains(uuid)) return;
+        if(hasAbility(uuid)) return;
 
         addAbility(uuid);
 

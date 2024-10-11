@@ -3,6 +3,8 @@ package com.thedev.sweetabilities.listeners;
 import com.thedev.sweetabilities.SweetAbilities;
 import com.thedev.sweetabilities.abilities.diablomanager.DiabloAbilityManager;
 import com.thedev.sweetabilities.abilities.hellmanager.HellManager;
+import com.thedev.sweetabilities.utils.PacketUtil;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -25,9 +27,11 @@ public class TestingListener implements Listener {
         if(event.getAction() != Action.LEFT_CLICK_AIR) return;
 
         UUID playerUUID = event.getPlayer().getUniqueId();
+//
+//        HellManager hellManager = plugin.getAbilityManager().getHellManager();
+//
+//        hellManager.activateHell(playerUUID, false);
 
-        HellManager hellManager = plugin.getAbilityManager().getHellManager();
-
-        hellManager.activateHell(playerUUID, false);
+        PacketUtil.changePlayerHelmetPacket(playerUUID, playerUUID, new ItemStack(Material.LEATHER_BOOTS));
     }
 }
