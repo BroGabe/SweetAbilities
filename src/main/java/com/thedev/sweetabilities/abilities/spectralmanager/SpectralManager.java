@@ -3,6 +3,8 @@ package com.thedev.sweetabilities.abilities.spectralmanager;
 import com.thedev.sweetabilities.SweetAbilities;
 import com.thedev.sweetabilities.utils.ItemBuilder;
 import com.thedev.sweetabilities.utils.PacketUtil;
+import com.thedev.sweetabilities.utils.enums.EquipmentType;
+import com.thedev.sweetabilities.utils.packetutils.EquipmentPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -69,12 +71,12 @@ public class SpectralManager {
 
             ItemStack itemStack = player.getInventory().getHelmet();
 
-            PacketUtil.changePlayerHelmetPacket(player.getUniqueId(), player.getUniqueId(), itemStack);
+            EquipmentPacket.sendEquipmentPacket(player.getUniqueId(), player.getUniqueId(), itemStack, EquipmentType.HELMET);
 
             player.getNearbyEntities(15, 15, 15).forEach(nearbyEntity -> {
                 if(nearbyEntity instanceof Player) {
                     Player nearbyPlayer = (Player) nearbyEntity;
-                    PacketUtil.changePlayerHelmetPacket(player.getUniqueId(), nearbyPlayer.getUniqueId(), itemStack);
+                    EquipmentPacket.sendEquipmentPacket(player.getUniqueId(), nearbyPlayer.getUniqueId(), itemStack, EquipmentType.HELMET);
                 }
             });
         }, 80L);
@@ -105,13 +107,13 @@ public class SpectralManager {
 
                 ItemStack glass = glassItemList.get(random.nextInt(glassItemList.size()));
 
-                PacketUtil.changePlayerHelmetPacket(spectralPlayer.getUniqueId(), spectralPlayer.getUniqueId(), glass);
+                EquipmentPacket.sendEquipmentPacket(spectralPlayer.getUniqueId(), spectralPlayer.getUniqueId(), glass, EquipmentType.HELMET);
 
                 spectralPlayer.getNearbyEntities(15, 15, 15).forEach(nearbyEntity -> {
                     if(nearbyEntity instanceof Player) {
                         Player nearbyPlayer = (Player) nearbyEntity;
 
-                        PacketUtil.changePlayerHelmetPacket(spectralPlayer.getUniqueId(), nearbyPlayer.getUniqueId(), glass);
+                        EquipmentPacket.sendEquipmentPacket(spectralPlayer.getUniqueId(), nearbyPlayer.getUniqueId(), glass, EquipmentType.HELMET);
                     }
                 });
             }
