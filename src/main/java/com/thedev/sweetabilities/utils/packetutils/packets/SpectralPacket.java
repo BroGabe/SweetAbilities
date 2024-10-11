@@ -10,12 +10,12 @@ public class SpectralPacket extends ExpiringPacket {
     }
 
     @Override
-    protected void runPacket() {
+    public void runPacket() {
         setExpired(false);
     }
 
     @Override
-    protected void cancelPacket() {
+    public void cancelPacket() {
         setExpired(true);
     }
 
